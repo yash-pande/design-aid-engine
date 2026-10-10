@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { preferredLanguage } from "./language";
+import { preferredLanguage } from "./language.ts";
 
 describe("language preference", () => {
   it("defaults to English for a new visit", () => {
