@@ -79,10 +79,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Yamini Studio" },
-      { name: "description", content: "Herança indiana. Espírito brasileiro." },
+      { name: "description", content: "Indian Heritage. Brazilian Spirit." },
       { name: "author", content: "Yamini Fashion House" },
       { property: "og:title", content: "Yamini Studio" },
-      { property: "og:description", content: "Herança indiana. Espírito brasileiro." },
+      { property: "og:description", content: "Indian Heritage. Brazilian Spirit." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -105,7 +105,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en-GB">
       <head>
         <HeadContent />
       </head>
