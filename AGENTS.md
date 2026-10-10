@@ -13,3 +13,5 @@
 
 - Keep YAMINI STUDIO as a bilingual editorial single-page experience; section navigation uses in-page anchors because the supplied journey is intentionally continuous.
 - Keep all visible copy in the language dictionary so Portuguese and English switch together without partial translations.
+- Import editorial photographs as bundled assets and render individual cropped source images, not multi-image sheets, to keep each subject independent and accessible.
+- Resolve saved language through the shared language helper and persist only after preferences have hydrated, preventing the initial render from overwriting an existing selection.

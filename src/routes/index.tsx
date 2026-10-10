@@ -1,14 +1,29 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import logoAsset from "@/assets/yamini-studio-logo.png.asset.json";
 
-type Language = "pt" | "en";
+import { Button } from "@/components/ui/button";
+import { preferredLanguage, type Language } from "@/lib/language";
+import silkHero from "@/assets/silk-hero.jpg";
+import silkZari from "@/assets/silk-zari.jpg";
+import cottonPrint from "@/assets/cotton-print.jpg";
+import textileMemory from "@/assets/textile-memory.jpg";
+import miniDress from "@/assets/mini-dress.jpg";
+import maxiDress from "@/assets/maxi-dress.jpg";
+import beachwear from "@/assets/beachwear.jpg";
+import bagsAccessories from "@/assets/bags-accessories.jpg";
+import indiaCraft from "@/assets/india-craft.jpg";
+import brazilLight from "@/assets/brazil-light.jpg";
+import mayaminiDresses from "@/assets/mayamini-dresses.jpg";
+import creativeWorkspace from "@/assets/creative-workspace.jpg";
+
+const fabricImages = [silkZari, cottonPrint, textileMemory];
+const categoryImages = [miniDress, maxiDress, beachwear, bagsAccessories];
 
 const content = {
   pt: {
     meta: "Herança indiana. Espírito brasileiro.",
     nav: ["Yamini", "Coleções", "MaYamini", "Fundadora", "Filosofia"],
-    boutique: "Boutique Online", investors: "Relações com Investidores",
     menu: "Abrir menu", close: "Fechar menu",
     yaminiDrop: ["Por que Yamini?", "Da Índia ao Brasil", "O encontro de duas culturas"],
     collectionDrop: ["Vestidos Mini", "Vestidos Maxi", "Beachwear", "Bolsas e Acessórios"],
@@ -56,16 +71,18 @@ const content = {
       "Yamini Studio reflete sua própria experiência de conectar culturas e encontrar beleza no espaço entre elas.",
       "Por meio de suas criações, Alka deseja oferecer às mulheres brasileiras roupas e acessórios que combinem a estética dos têxteis indianos com o conforto e a leveza do viver brasileiro.",
     ],
-    portrait: "Retrato de Alka Deshmukh sob luz suave",
+    workspace: "O olhar criativo · seda, esboços e fio zari",
+    mayaImage: "Vestidos coordenados para mãe e filha em algodão estampado",
+    cultureEyebrow: "Índia × Brasil", mayaEyebrow: "Mãe · filha",
+    copyright: "© 2026 Yamini Fashion House. Yamini Studio é uma marca da Yamini Fashion House.",
     philosophyLabel: "Nossa Filosofia", philosophyTitle: "Tecidos belos merecem novas histórias.",
     philosophy: "Yamini Studio celebra a herança têxtil indiana, permitindo que ela evolua através da moda brasileira contemporânea. Acreditamos que a moda pode conectar culturas sem apagar sua individualidade. A tradição pode inspirar algo moderno. A beleza pode coexistir com o conforto. E um tecido que atravessou gerações pode começar uma história inteiramente nova em outra parte do mundo.",
     signoff: "Têxteis indianos. Sensibilidade brasileira. Uma nova história para cada tecido.",
-    visit: "Visitar", disclaimer: "As imagens indicam a direção artística da futura fotografia da marca.", backTop: "Voltar ao topo",
+    disclaimer: "As imagens indicam a direção artística da futura fotografia da marca.", backTop: "Voltar ao topo",
   },
   en: {
     meta: "Indian Heritage. Brazilian Spirit.",
     nav: ["Yamini", "Collections", "MaYamini", "Founder", "Philosophy"],
-    boutique: "Online Boutique", investors: "Investor Relations",
     menu: "Open menu", close: "Close menu",
     yaminiDrop: ["Why Yamini?", "From India to Brazil", "A Meeting of Two Cultures"],
     collectionDrop: ["Mini Dresses", "Maxi Dresses", "Beachwear", "Bags & Accessories"],
@@ -113,20 +130,23 @@ const content = {
       "Yamini Studio reflects her own experience of connecting cultures and finding beauty in the space between them.",
       "Through her creations, Alka hopes to offer Brazilian women clothing and accessories that combine the aesthetics of Indian textiles with the comfort and ease of Brazilian living.",
     ],
-    portrait: "Portrait of Alka Deshmukh in soft light",
+    workspace: "The creative eye · silk, sketches and zari thread",
+    mayaImage: "Coordinated mother and daughter dresses in printed cotton",
+    cultureEyebrow: "India × Brazil", mayaEyebrow: "Mother · daughter",
+    copyright: "© 2026 Yamini Fashion House. Yamini Studio is a label owned by Yamini Fashion House.",
     philosophyLabel: "Our Philosophy", philosophyTitle: "Beautiful fabrics deserve new stories.",
     philosophy: "Yamini Studio celebrates Indian textile heritage while allowing it to evolve through contemporary Brazilian fashion. We believe fashion can connect cultures without erasing their individuality. Tradition can inspire something modern. Beauty can coexist with comfort. And a fabric that has travelled through generations can begin a completely new story in another part of the world.",
     signoff: "Indian textiles. Brazilian sensibility. A new story for every fabric.",
-    visit: "Visit", disclaimer: "Images indicate the art direction for the brand's future photography.", backTop: "Back to top",
+    disclaimer: "Images indicate the art direction for the brand's future photography.", backTop: "Back to top",
   },
 } as const;
 
 export const Route = createFileRoute("/")({
   head: () => ({ meta: [
-    { title: "Yamini Studio — Herança indiana. Espírito brasileiro." },
-    { name: "description", content: "Yamini Studio une a riqueza dos têxteis indianos à sensibilidade da moda brasileira contemporânea." },
-    { property: "og:title", content: "Yamini Studio" },
-    { property: "og:description", content: "Herança indiana. Espírito brasileiro." },
+    { title: "Yamini Studio — Indian Heritage. Brazilian Spirit." },
+    { name: "description", content: "Yamini Studio brings Indian textile heritage to contemporary Brazilian fashion." },
+    { property: "og:title", content: "Yamini Studio — Indian Heritage. Brazilian Spirit." },
+    { property: "og:description", content: "Yamini Studio brings Indian textile heritage to contemporary Brazilian fashion." },
     { property: "og:type", content: "website" },
     { name: "twitter:card", content: "summary_large_image" },
   ], links: [{ rel: "canonical", href: "/" }] }),
@@ -134,7 +154,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [language, setLanguage] = useState<Language>("pt");
+  const [language, setLanguage] = useState<Language>("en");
+  const [languageReady, setLanguageReady] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const t = content[language];
@@ -144,14 +165,17 @@ function Index() {
   ] as const, [t]);
 
   useEffect(() => {
-    try { const saved = localStorage.getItem("yamini-language"); if (saved === "en") setLanguage("en"); } catch { /* Keep Portuguese default. */ }
+    try { setLanguage(preferredLanguage(localStorage.getItem("yamini-language"))); } catch { /* Keep English default. */ }
+    setLanguageReady(true);
   }, []);
 
   useEffect(() => {
     document.documentElement.lang = language === "pt" ? "pt-BR" : "en-GB";
     document.title = language === "pt" ? "Yamini Studio — Herança indiana. Espírito brasileiro." : "Yamini Studio — Indian Heritage. Brazilian Spirit.";
-    try { localStorage.setItem("yamini-language", language); } catch { /* Language still works for this visit. */ }
-  }, [language]);
+    if (languageReady) {
+      try { localStorage.setItem("yamini-language", language); } catch { /* Language still works for this visit. */ }
+    }
+  }, [language, languageReady]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -165,48 +189,44 @@ function Index() {
   }, []);
 
   const changeLanguage = (next: Language) => { setLanguage(next); setMenuOpen(false); };
-  const LanguageSwitch = () => <div className="language-switch" aria-label="Language selection"><button className={language === "pt" ? "is-active" : ""} onClick={() => changeLanguage("pt")}>PT-BR</button><span aria-hidden="true">|</span><button className={language === "en" ? "is-active" : ""} onClick={() => changeLanguage("en")}>EN-UK</button></div>;
+  const LanguageSwitch = () => <div className="language-switch" aria-label="Language selection"><Button variant="ghost" className={language === "pt" ? "is-active" : ""} onClick={() => changeLanguage("pt")}>PT-BR</Button><span aria-hidden="true">|</span><Button variant="ghost" className={language === "en" ? "is-active" : ""} onClick={() => changeLanguage("en")}>EN-UK</Button></div>;
 
   return <div className="page">
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
-      <LanguageSwitch />
       <div className="brand-row"><a href="#top" aria-label="Yamini Studio"><img src={logoAsset.url} alt="Yamini Studio" /></a></div>
       <nav className="desktop-nav" aria-label="Main navigation">
         <div className="nav-item"><a href="#yamini">{t.nav[0]}</a><div className="nav-dropdown">{t.yaminiDrop.map((item, i) => <a key={item} href={["#yamini", "#collections", "#cultures"][i]}>{item}</a>)}</div></div>
         <div className="nav-item"><a href="#collections">{t.nav[1]}</a><div className="nav-dropdown">{t.collectionDrop.map(item => <a key={item} href="#collections">{item}</a>)}</div></div>
         {navLinks.slice(2).map(([label, href]) => <div className="nav-item" key={href}><a href={href}>{label}</a></div>)}
-        <div className="nav-item"><Link to="/boutique">{t.boutique}</Link></div>
-        <div className="nav-item"><Link to="/investors">{t.investors}</Link></div>
+        <LanguageSwitch />
       </nav>
-      <div className="mobile-bar"><button className="menu-button" aria-label={menuOpen ? t.close : t.menu} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><span/><span/></button><a href="#top"><img src={logoAsset.url} alt="Yamini Studio" /></a><LanguageSwitch /></div>
-      <nav className={`mobile-menu ${menuOpen ? "is-open" : ""}`} aria-label="Mobile navigation">{navLinks.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}<Link to="/boutique">{t.boutique}</Link><Link to="/investors">{t.investors}</Link></nav>
+      <div className="mobile-bar"><Button variant="ghost" className="menu-button" aria-label={menuOpen ? t.close : t.menu} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><span/><span/></Button><a href="#top"><img src={logoAsset.url} alt="Yamini Studio" /></a><LanguageSwitch /></div>
+      <nav className={`mobile-menu ${menuOpen ? "is-open" : ""}`} aria-label="Mobile navigation">{navLinks.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}</nav>
     </header>
 
     <main id="top">
-      <section className="section hero"><div className="inner hero-grid"><div className="hero-copy"><p className="eyebrow">Yamini Studio</p><h1>{t.heroLabel}</h1><p>{t.heroIntro}</p><a className="text-link" href="#yamini">{t.discover}</a></div><div className="hero-visual" role="img" aria-label={t.heroImage}><span className="image-caption">{t.heroImage}</span></div></div></section>
+      <section className="section hero"><div className="inner hero-grid"><div className="hero-copy"><p className="eyebrow">Yamini Studio</p><h1>{t.heroLabel}</h1><p>{t.heroIntro}</p><a className="text-link" href="#yamini">{t.discover}</a></div><figure className="hero-visual"><img src={silkHero} alt={t.heroImage} width={1024} height={1536} fetchPriority="high" /></figure></div></section>
 
       <section id="yamini" className="section night-section"><NightSky/><span className="devanagari" aria-hidden="true">यामिनी</span><div className="inner night-grid"><div className="night-title"><p className="eyebrow">Yāminī · यामिनी</p><h2>{t.whyTitle}</h2></div><div className="night-copy">{t.why.map(p => <p key={p}>{p}</p>)}<blockquote className="pullquote">{t.whyQuote}</blockquote></div></div></section>
 
-      <section id="collections" className="section"><div className="inner"><div className="india-grid"><div className="india-copy"><p className="eyebrow">Maharashtra · Brasil</p><h2>{t.indiaTitle}</h2>{t.india.map(p => <p key={p}>{p}</p>)}<blockquote className="pullquote">{t.indiaQuote}</blockquote></div><div className="fabric-grid">{t.fabricCaps.map(c => <div className="fabric" key={c}><p className="image-caption">{c}</p></div>)}</div></div><div className="category-grid">{t.categories.map(c => <div className="category" key={c}>{c}</div>)}</div></div></section>
+      <section id="collections" className="section"><div className="inner"><div className="india-grid"><div className="india-copy"><p className="eyebrow">Maharashtra · Brasil</p><h2>{t.indiaTitle}</h2>{t.india.map(p => <p key={p}>{p}</p>)}<blockquote className="pullquote">{t.indiaQuote}</blockquote></div><div className="fabric-grid">{t.fabricCaps.map((c, i) => <figure className="fabric" key={c}><img src={fabricImages[i]} alt={c} width={508} height={1024} loading="lazy" /><figcaption className="image-caption">{c}</figcaption></figure>)}</div></div><div className="category-grid">{t.categories.map((c, i) => <figure className="category" key={c}><img src={categoryImages[i]} alt={c} width={764} height={764} loading="lazy" /><figcaption>{c}</figcaption></figure>)}</div></div></section>
 
-      <section id="cultures" className="section culture"><div className="inner"><p className="eyebrow">Índia × Brasil</p><h2>{t.cultureTitle}</h2><div className="culture-grid"><div className="culture-panel india"><div><p className="eyebrow">{t.indiaLabel}</p>{t.culture.slice(0,2).map(p => <p key={p}>{p}</p>)}</div></div><div className="lattice" aria-hidden="true"/><div className="culture-panel brazil"><div><p className="eyebrow">{t.brazilLabel}</p>{t.culture.slice(2).map(p => <p key={p}>{p}</p>)}</div></div></div></div></section>
+      <section id="cultures" className="section culture"><div className="inner"><p className="eyebrow">{t.cultureEyebrow}</p><h2>{t.cultureTitle}</h2><div className="culture-grid"><div className="culture-panel india"><img src={indiaCraft} alt={t.indiaLabel} width={764} height={764} loading="lazy" /><div><p className="eyebrow">{t.indiaLabel}</p>{t.culture.slice(0,2).map(p => <p key={p}>{p}</p>)}</div></div><div className="lattice" aria-hidden="true"/><div className="culture-panel brazil"><img src={brazilLight} alt={t.brazilLabel} width={764} height={764} loading="lazy" /><div><p className="eyebrow">{t.brazilLabel}</p>{t.culture.slice(2).map(p => <p key={p}>{p}</p>)}</div></div></div></div></section>
 
-      <section id="mayamini" className="section mayamini"><div className="inner mayamini-grid"><Warli/><div><p className="eyebrow">Mãe · filha</p><h2>{t.mayaTitle}</h2>{t.maya.map(p => <p key={p}>{p}</p>)}<blockquote className="pullquote">{t.mayaQuote}</blockquote></div></div></section>
+      <section id="mayamini" className="section mayamini"><div className="inner mayamini-grid"><img className="mayamini-image" src={mayaminiDresses} alt={t.mayaImage} width={764} height={764} loading="lazy" /><div><p className="eyebrow">{t.mayaEyebrow}</p><h2>{t.mayaTitle}</h2>{t.maya.map(p => <p key={p}>{p}</p>)}<blockquote className="pullquote">{t.mayaQuote}</blockquote></div></div></section>
 
-      <section id="founder" className="section"><div className="inner founder-grid"><div className="founder-portrait" role="img" aria-label={t.portrait}><span className="image-caption">{t.portrait}</span></div><div className="founder-copy"><p className="eyebrow">{t.founderLabel}</p><h2>Alka Deshmukh</h2>{t.founder.map(p => <p key={p}>{p}</p>)}</div></div></section>
+      <section id="founder" className="section"><div className="inner founder-grid"><figure className="founder-still-life"><img src={creativeWorkspace} alt={t.workspace} width={764} height={764} loading="lazy" /><figcaption className="image-caption">{t.workspace}</figcaption></figure><div className="founder-copy"><p className="eyebrow">{t.founderLabel}</p><h2>Alka Deshmukh</h2>{t.founder.map(p => <p key={p}>{p}</p>)}</div></div></section>
 
       <section id="philosophy" className="section philosophy"><div className="inner"><p className="eyebrow">{t.philosophyLabel}</p><h2>{t.philosophyTitle}</h2><p>{t.philosophy}</p><p className="signature">Yamini Studio</p><p className="eyebrow">{t.signoff}</p></div></section>
 
-      <section className="section"><div className="inner entry-rows"><div className="entry-row"><span className="eyebrow">{t.boutique}</span><Link className="outline-link" to="/boutique">{t.visit}</Link></div><div className="entry-row"><span className="eyebrow">{t.investors}</span><Link className="outline-link" to="/investors">{t.visit}</Link></div></div></section>
     </main>
 
     <div className="prahar-thread" aria-hidden="true"><i/><i/><i/><i/></div>
-    <footer className="site-footer"><div className="pallu" aria-hidden="true"><span/><span/><span/></div><div className="inner"><div className="footer-grid"><div><img src={logoAsset.url} alt="Yamini Studio" width="150"/><p className="footer-note">{t.disclaimer}</p></div><nav className="footer-links" aria-label="Footer">{navLinks.map(([label, href]) => <a key={href} href={href}>{label}</a>)}<Link to="/boutique">{t.boutique}</Link><Link to="/investors">{t.investors}</Link></nav><div className="rangoli" title="96" aria-label="96">{Array.from({length:96},(_,i)=><i key={i}/>)}</div></div><div className="footer-bottom"><span>© 2026 Yamini Fashion House. Yamini Studio is a label owned by Yamini Fashion House.</span><button className="lamp" title={t.backTop} aria-label={t.backTop} onClick={() => window.scrollTo({top:0, behavior:"smooth"})}><Lamp/></button></div></div></footer>
+    <footer className="site-footer"><div className="pallu" aria-hidden="true"><span/><span/><span/></div><div className="inner"><div className="footer-grid"><div><img src={logoAsset.url} alt="Yamini Studio" width="150"/><p className="footer-note">{t.disclaimer}</p></div><nav className="footer-links" aria-label="Footer">{navLinks.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav><div className="rangoli" title="96" aria-label="96">{Array.from({length:96},(_,i)=><i key={i}/>)}</div></div><div className="footer-bottom"><span>{t.copyright}</span><Button variant="ghost" className="lamp" title={t.backTop} aria-label={t.backTop} onClick={() => window.scrollTo({top:0, behavior:"smooth"})}><Lamp/></Button></div></div></footer>
   </div>;
 }
 
 function NightSky() { return <svg className="night-sky" viewBox="0 0 360 220" fill="none" aria-hidden="true"><path d="M72 28c-25 17-30 54-8 77 19 20 51 18 67-3-24 9-48-7-52-31-3-18 5-34 18-44-9-2-17-1-25 1Z" stroke="currentColor"/><g fill="currentColor"><circle cx="183" cy="42" r="2"/><circle cx="210" cy="55" r="1.5"/><circle cx="234" cy="87" r="2"/><circle cx="266" cy="76" r="1.5"/><circle cx="285" cy="106" r="2"/><circle cx="304" cy="138" r="1.5"/><circle cx="321" cy="164" r="2"/><circle cx="172" cy="151" r="1.5"/><circle cx="187" cy="174" r="2"/><circle cx="155" cy="180" r="1.5"/></g><circle className="sun-star" cx="207" cy="148" r="3"/></svg>; }
 
-function Warli() { return <svg className="warli" viewBox="0 0 500 440" fill="none" stroke="currentColor" strokeWidth="1" aria-hidden="true"><path d="M40 370h420M100 370c15-45 18-92 10-142M395 370c-10-50-9-98 5-145"/><circle cx="220" cy="110" r="24"/><path d="m220 134-45 78h90l-45-78Zm0 78-45 80h90l-45-80Zm-22 80-12 78m57-78 12 78m-62-186-62 56m111-51 67 55"/><circle cx="330" cy="230" r="16"/><path d="m330 246-29 49h58l-29-49Zm0 49-28 50h56l-28-50Zm-14 50-7 25m35-25 7 25m-40-85-35 25"/><path d="M82 190c45-52 103-100 172-133M61 210c64-24 119-28 167-13" strokeOpacity=".32"/><circle cx="110" cy="100" r="4"/><circle cx="390" cy="140" r="4"/></svg>; }
 
 function Lamp() { return <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1"><path className="flame" d="M16 3c4 5 3 8 0 10-3-2-4-5 0-10Z"/><path d="M7 16h18c-1 6-4 9-9 9s-8-3-9-9Zm4 10h10m-8 3h6"/></svg>; }
