@@ -85,8 +85,8 @@ h2 { font-size: clamp(1.5rem, 2.4vw, 2.125rem); }
 .nav-item:hover .nav-dropdown, .nav-item:focus-within .nav-dropdown { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 .nav-dropdown a { display: block; padding: .45rem 0; letter-spacing: .08em; text-transform: none; }
 .mobile-bar, .mobile-menu { display: none; }
-.menu-button { border: 0; background: none; width: 38px; height: 38px; cursor: pointer; }
-.menu-button span { display: block; width: 22px; height: 1px; margin: 6px auto; background: var(--foreground); }
+.menu-button { flex-direction: column; gap: 0; padding: 0; border: 0; background: none; width: 38px; height: 38px; cursor: pointer; }
+.menu-button span { display: block; flex-shrink: 0; width: 22px; height: 1px; margin: 3px auto; background: var(--foreground); }
 
 .page { overflow: clip; }
 .section { position: relative; padding: clamp(6rem, 14vh, 11.25rem) clamp(1.25rem, 5vw, 4rem); }
