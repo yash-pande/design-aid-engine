@@ -3,3 +3,7 @@
 - [x] Move the language toggle into the navigation bar and remove its dot.
 - [x] Add coordinated textile, collection, culture, MaYamini and founder still-life imagery.
 - [x] Verify language switching and the updated page.
+- [ ] Replace Collections dropdown with direct showcase navigation.
+- [ ] Add reference-inspired collection listing and product details with zoom and session wishlist; no shopping controls.
+- [ ] Fix the mobile menu icon and centre the logo.
+- [ ] Verify showcase navigation, filters, gallery zoom and mobile layout.
