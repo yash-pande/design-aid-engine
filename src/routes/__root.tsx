@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { CatalogueProvider } from '@/components/CatalogueContext';
 
 function NotFoundComponent() {
   return (
@@ -123,7 +124,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <CatalogueProvider><Outlet /></CatalogueProvider>
     </QueryClientProvider>
   );
 }

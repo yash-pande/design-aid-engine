@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import logoAsset from "@/assets/yamini-studio-logo.png.asset.json";
 
@@ -196,12 +196,12 @@ function Index() {
       <div className="brand-row"><a href="#top" aria-label="Yamini Studio"><img src={logoAsset.url} alt="Yamini Studio" /></a></div>
       <nav className="desktop-nav" aria-label="Main navigation">
         <div className="nav-item"><a href="#yamini">{t.nav[0]}</a><div className="nav-dropdown">{t.yaminiDrop.map((item, i) => <a key={item} href={["#yamini", "#collections", "#cultures"][i]}>{item}</a>)}</div></div>
-        <div className="nav-item"><a href="#collections">{t.nav[1]}</a><div className="nav-dropdown">{t.collectionDrop.map(item => <a key={item} href="#collections">{item}</a>)}</div></div>
+        <div className="nav-item"><Link to="/collections">{t.nav[1]}</Link></div>
         {navLinks.slice(2).map(([label, href]) => <div className="nav-item" key={href}><a href={href}>{label}</a></div>)}
         <LanguageSwitch />
       </nav>
-      <div className="mobile-bar"><Button variant="ghost" className="menu-button" aria-label={menuOpen ? t.close : t.menu} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><span/><span/></Button><a href="#top"><img src={logoAsset.url} alt="Yamini Studio" /></a><LanguageSwitch /></div>
-      <nav className={`mobile-menu ${menuOpen ? "is-open" : ""}`} aria-label="Mobile navigation">{navLinks.map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}</nav>
+      <div className="mobile-bar"><Button variant="ghost" className="menu-button" aria-label={menuOpen ? t.close : t.menu} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><span/><span/><span/></Button><a href="#top"><img src={logoAsset.url} alt="Yamini Studio" /></a><LanguageSwitch /></div>
+      <nav className={`mobile-menu ${menuOpen ? "is-open" : ""}`} aria-label="Mobile navigation">{navLinks.map(([label, href], i) => i === 1 ? <Link key={href} to="/collections" onClick={() => setMenuOpen(false)}>{label}</Link> : <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}</nav>
     </header>
 
     <main id="top">
@@ -209,7 +209,7 @@ function Index() {
 
       <section id="yamini" className="section night-section"><NightSky/><span className="devanagari" aria-hidden="true">यामिनी</span><div className="inner night-grid"><div className="night-title"><p className="eyebrow">Yāminī · यामिनी</p><h2>{t.whyTitle}</h2></div><div className="night-copy">{t.why.map(p => <p key={p}>{p}</p>)}<blockquote className="pullquote">{t.whyQuote}</blockquote></div></div></section>
 
-      <section id="collections" className="section"><div className="inner"><div className="india-grid"><div className="india-copy"><p className="eyebrow">Maharashtra · Brasil</p><h2>{t.indiaTitle}</h2>{t.india.map(p => <p key={p}>{p}</p>)}<blockquote className="pullquote">{t.indiaQuote}</blockquote></div><div className="fabric-grid">{t.fabricCaps.map((c, i) => <figure className="fabric" key={c}><img src={fabricImages[i]} alt={c} width={508} height={1024} loading="lazy" /><figcaption className="image-caption">{c}</figcaption></figure>)}</div></div><div className="category-grid">{t.categories.map((c, i) => <figure className="category" key={c}><img src={categoryImages[i]} alt={c} width={764} height={764} loading="lazy" /><figcaption>{c}</figcaption></figure>)}</div></div></section>
+      <section id="collections" className="section"><div className="inner"><div className="india-grid"><div className="india-copy"><p className="eyebrow">Maharashtra · Brasil</p><h2>{t.indiaTitle}</h2>{t.india.map(p => <p key={p}>{p}</p>)}<blockquote className="pullquote">{t.indiaQuote}</blockquote></div><div className="fabric-grid">{t.fabricCaps.map((c, i) => <figure className="fabric" key={c}><img src={fabricImages[i]} alt={c} width={508} height={1024} loading="lazy" /><figcaption className="image-caption">{c}</figcaption></figure>)}</div></div><div className="category-grid">{t.categories.map((c, i) => <Link key={c} to="/collections" search={{ category: ["mini-dresses", "maxi-dresses", "beachwear", "bags-accessories"][i] }}><figure className="category"><img src={categoryImages[i]} alt={c} width={764} height={764} loading="lazy" /><figcaption>{c}</figcaption></figure></Link>)}</div></div></section>
 
       <section id="cultures" className="section culture"><div className="inner"><p className="eyebrow">{t.cultureEyebrow}</p><h2>{t.cultureTitle}</h2><div className="culture-grid"><div className="culture-panel india"><img src={indiaCraft} alt={t.indiaLabel} width={764} height={764} loading="lazy" /><div><p className="eyebrow">{t.indiaLabel}</p>{t.culture.slice(0,2).map(p => <p key={p}>{p}</p>)}</div></div><div className="lattice" aria-hidden="true"/><div className="culture-panel brazil"><img src={brazilLight} alt={t.brazilLabel} width={764} height={764} loading="lazy" /><div><p className="eyebrow">{t.brazilLabel}</p>{t.culture.slice(2).map(p => <p key={p}>{p}</p>)}</div></div></div></div></section>
 
@@ -222,7 +222,7 @@ function Index() {
     </main>
 
     <div className="prahar-thread" aria-hidden="true"><i/><i/><i/><i/></div>
-    <footer className="site-footer"><div className="pallu" aria-hidden="true"><span/><span/><span/></div><div className="inner"><div className="footer-grid"><div><img src={logoAsset.url} alt="Yamini Studio" width="150"/><p className="footer-note">{t.disclaimer}</p></div><nav className="footer-links" aria-label="Footer">{navLinks.map(([label, href]) => <a key={href} href={href}>{label}</a>)}</nav><div className="rangoli" title="96" aria-label="96">{Array.from({length:96},(_,i)=><i key={i}/>)}</div></div><div className="footer-bottom"><span>{t.copyright}</span><Button variant="ghost" className="lamp" title={t.backTop} aria-label={t.backTop} onClick={() => window.scrollTo({top:0, behavior:"smooth"})}><Lamp/></Button></div></div></footer>
+    <footer className="site-footer"><div className="pallu" aria-hidden="true"><span/><span/><span/></div><div className="inner"><div className="footer-grid"><div><img src={logoAsset.url} alt="Yamini Studio" width="150"/><p className="footer-note">{t.disclaimer}</p></div><nav className="footer-links" aria-label="Footer">{navLinks.map(([label, href], i) => i === 1 ? <Link key={href} to="/collections">{label}</Link> : <a key={href} href={href}>{label}</a>)}</nav><div className="rangoli" title="96" aria-label="96">{Array.from({length:96},(_,i)=><i key={i}/>)}</div></div><div className="footer-bottom"><span>{t.copyright}</span><Button variant="ghost" className="lamp" title={t.backTop} aria-label={t.backTop} onClick={() => window.scrollTo({top:0, behavior:"smooth"})}><Lamp/></Button></div></div></footer>
   </div>;
 }
 

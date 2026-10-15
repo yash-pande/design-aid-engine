@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import logoAsset from "@/assets/yamini-studio-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { preferredLanguage, type Language } from "@/lib/language";
+import { catalogueCopy } from "@/lib/catalogue";
 
 /**
  * Quiet header + language handling for sub-pages, matching the home theme.
@@ -50,6 +51,7 @@ export function SubPageShell({ children }: { children: (language: Language) => R
           </div>
         </div>
       </header>
+      <nav className="subpage-navigation"><Link to="/">{catalogueCopy[language].home}</Link><Link to="/collections">{catalogueCopy[language].collections}</Link></nav>
       <main>{children(language)}</main>
     </div>
   );
