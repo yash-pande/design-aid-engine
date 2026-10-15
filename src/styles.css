@@ -177,7 +177,9 @@ h2 { font-size: clamp(1.5rem, 2.4vw, 2.125rem); }
 @media (max-width: 900px) {
   .desktop-nav { display: none; }
   .site-header > .language-switch, .site-header > .brand-row { display: none; }
-  .mobile-bar { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; align-items: center; min-height: 88px; padding: 0 1rem; }
+  .mobile-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; min-height: 88px; padding: 0 1rem; }
+  .mobile-bar > a { justify-self: center; }
+  .mobile-bar > .language-switch { justify-self: end; min-width: 0; }
   .mobile-bar img { width: 108px; margin: auto; }
   .mobile-bar .language-switch { padding: 0; font-size: .58rem; }
   .mobile-menu { display: flex; position: fixed; z-index: 45; inset: 88px 0 0; flex-direction: column; align-items: center; justify-content: center; gap: 1.4rem; background: var(--background); opacity: 0; visibility: hidden; transition: .35s ease; }

@@ -11,7 +11,8 @@
 
 ## Project architecture
 
-- Keep YAMINI STUDIO as a bilingual editorial single-page experience; section navigation uses in-page anchors because the supplied journey is intentionally continuous.
+- Keep the home editorial journey continuous with in-page anchors; Collections and product details use dedicated TanStack routes for shareable catalogue browsing.
+- Catalogue data and bilingual product copy live in a shared browser-safe module; wishlist state is session-only React context because no account or permanent saving is requested.
 - Keep all visible copy in the language dictionary so Portuguese and English switch together without partial translations.
 - Import editorial photographs as bundled assets and render individual cropped source images, not multi-image sheets, to keep each subject independent and accessible.
 - Resolve saved language through the shared language helper and persist only after preferences have hydrated, preventing the initial render from overwriting an existing selection.
