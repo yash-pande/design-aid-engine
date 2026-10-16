@@ -12,5 +12,8 @@
   },
   "observability": {
     "enabled": true
+  },
+  "build": {
+    "command": "bun run build || npm run build"
   }
 }
