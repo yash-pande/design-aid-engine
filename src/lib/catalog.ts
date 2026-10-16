@@ -554,28 +554,28 @@ export const products: Product[] = [
     tagPt: 'Edição Festiva',
 
     description:
-      'An elegant bright orange maxi dress featuring a fitted scoop-neck bodice with distinctive gold zari woven straps[cite: 9, 13]. The skirt is beautifully pleated, flowing into a wide, ornate gold zari border accented by a delicate purple wavy trim[cite: 13, 10]. A perfect blend of traditional festive textures and a contemporary sleeveless silhouette[cite: 9, 12].',
+      'An elegant bright orange maxi dress featuring a fitted scoop-neck bodice with distinctive gold zari woven straps. The skirt is beautifully pleated, flowing into a wide, ornate gold zari border accented by a delicate purple wavy trim. A perfect blend of traditional festive textures and a contemporary sleeveless silhouette.',
 
     descriptionEn:
-      'An elegant bright orange maxi dress featuring a fitted scoop-neck bodice with distinctive gold zari woven straps[cite: 9, 13]. The skirt is beautifully pleated, flowing into a wide, ornate gold zari border accented by a delicate purple wavy trim[cite: 13, 10]. A perfect blend of traditional festive textures and a contemporary sleeveless silhouette[cite: 9, 12].',
+      'An elegant bright orange maxi dress featuring a fitted scoop-neck bodice with distinctive gold zari woven straps. The skirt is beautifully pleated, flowing into a wide, ornate gold zari border accented by a delicate purple wavy trim. A perfect blend of traditional festive textures and a contemporary sleeveless silhouette.',
 
     descriptionPt:
       'Um elegante vestido longo laranja brilhante com corpo ajustado de decote redondo e alças distintas tecidas em zari dourado. A saia é lindamente pregueada, fluindo para uma ampla e ornamentada borda de zari dourado acentuada por um delicado acabamento ondulado roxo. Uma mistura perfeita de texturas festivas tradicionais e uma silhueta contemporânea sem mangas.',
 
     details:
-      'Scoop neckline, thick gold zari shoulder straps, fitted bodice, and a pleated maxi skirt[cite: 13]. Finished with a wide woven gold zari hem featuring a purple zigzag pattern[cite: 13]. Concealed back zipper closure[cite: 12].',
+      'Scoop neckline, thick gold zari shoulder straps, fitted bodice, and a pleated maxi skirt. Finished with a wide woven gold zari hem featuring a purple zigzag pattern. Concealed back zipper closure.',
 
     detailsEn:
-      'Scoop neckline, thick gold zari shoulder straps, fitted bodice, and a pleated maxi skirt[cite: 13]. Finished with a wide woven gold zari hem featuring a purple zigzag pattern[cite: 13]. Concealed back zipper closure[cite: 12].',
+      'Scoop neckline, thick gold zari shoulder straps, fitted bodice, and a pleated maxi skirt. Finished with a wide woven gold zari hem featuring a purple zigzag pattern. Concealed back zipper closure.',
 
     detailsPt:
       'Decote redondo, alças grossas em zari dourado, corpo ajustado e saia longa pregueada. Finalizado com uma ampla bainha tecida em zari dourado apresentando um padrão em ziguezague roxo. Fechamento por zíper traseiro oculto.',
 
     heritage:
-      'Drawing inspiration from classic Indian festive textiles, this dress highlights rich zari work typically found in traditional sarees[cite: 8]. The vibrant orange hue and ornate borders bring celebratory heritage into an effortless, modern design[cite: 9, 13].',
+      'Drawing inspiration from classic Indian festive textiles, this dress highlights rich zari work typically found in traditional sarees. The vibrant orange hue and ornate borders bring celebratory heritage into an effortless, modern design.',
 
     heritageEn:
-      'Drawing inspiration from classic Indian festive textiles, this dress highlights rich zari work typically found in traditional sarees[cite: 8]. The vibrant orange hue and ornate borders bring celebratory heritage into an effortless, modern design[cite: 9, 13].',
+      'Drawing inspiration from classic Indian festive textiles, this dress highlights rich zari work typically found in traditional sarees. The vibrant orange hue and ornate borders bring celebratory heritage into an effortless, modern design.',
 
     heritagePt:
       'Inspirando-se nos clássicos tecidos festivos indianos, este vestido destaca o rico trabalho em zari tipicamente encontrado em saris tradicionais. O vibrante tom laranja e as bordas ornamentadas trazem a herança comemorativa para um design moderno e descomplicado.',

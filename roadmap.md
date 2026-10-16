@@ -7,3 +7,5 @@
 - [ ] Add reference-inspired collection listing and product details with zoom and session wishlist; no shopping controls.
 - [ ] Fix the mobile menu icon and centre the logo.
 - [ ] Verify showcase navigation, filters, gallery zoom and mobile layout.
+- [ ] Match reference listing and detail page layouts without selling features.
+- [ ] Add reference-style header search with clothing results.

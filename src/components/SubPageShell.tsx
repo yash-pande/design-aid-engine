@@ -15,6 +15,7 @@ export function SubPageShell({ children }: { children: (language: Language) => R
     <div className="page">
       <header className="site-header is-scrolled">
         <div className="subpage-bar">
+          <p className="catalogue-brand-note">{catalogueCopy[language].heritage}</p>
           <Link to="/" aria-label="Yamini Studio">
             <img src="/favicon.png" alt="Yamini Studio" className="brand-logo-desktop" />
             <img src="/facicon-mobile.png" alt="Yamini Studio" className="brand-logo-mobile" width="105" height="105" />
@@ -26,6 +27,7 @@ export function SubPageShell({ children }: { children: (language: Language) => R
         <Link to="/">{catalogueCopy[language].home}</Link>
         <Link to="/collections">{catalogueCopy[language].collections}</Link>
       </nav>
+
       <main>{children(language)}</main>
     </div>
   );
