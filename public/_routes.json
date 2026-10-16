@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "include": [
+    "/*"
+  ],
+  "exclude": [
+    "/assets/*",
+    "/favicon.png",
+    "/favicon1.png",
+    "/facicon-mobile.png",
+    "/favicon-mobile.png",
+    "/robots.txt",
+    "/yamini-studio-logo1.png",
+    "/dresses/*"
+  ]
+}

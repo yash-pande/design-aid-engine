@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import logoAsset from "@/assets/yamini-studio-logo.png.asset.json";
-
+import { useLanguage } from "@/lib/language-context";
+import { Menu } from "lucide-react";
+import { SidePanel } from "@/components/shop/storefront";
+import { collections } from "@/lib/catalog";
 import { Button } from "@/components/ui/button";
-import { preferredLanguage, type Language } from "@/lib/language";
+import { type Language } from "@/lib/language";
 import silkHero from "@/assets/silk-hero.jpg";
 import silkZari from "@/assets/silk-zari.jpg";
 import cottonPrint from "@/assets/cotton-print.jpg";
@@ -154,8 +156,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [language, setLanguage] = useState<Language>("en");
-  const [languageReady, setLanguageReady] = useState(false);
+  const { language, setLanguage } = useLanguage();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const t = content[language];
@@ -165,17 +166,8 @@ function Index() {
   ] as const, [t]);
 
   useEffect(() => {
-    try { setLanguage(preferredLanguage(localStorage.getItem("yamini-language"))); } catch { /* Keep English default. */ }
-    setLanguageReady(true);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = language === "pt" ? "pt-BR" : "en-GB";
     document.title = language === "pt" ? "Yamini Studio — Herança indiana. Espírito brasileiro." : "Yamini Studio — Indian Heritage. Brazilian Spirit.";
-    if (languageReady) {
-      try { localStorage.setItem("yamini-language", language); } catch { /* Language still works for this visit. */ }
-    }
-  }, [language, languageReady]);
+  }, [language]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -191,18 +183,102 @@ function Index() {
   const changeLanguage = (next: Language) => { setLanguage(next); setMenuOpen(false); };
   const LanguageSwitch = () => <div className="language-switch" aria-label="Language selection"><Button variant="ghost" className={language === "pt" ? "is-active" : ""} onClick={() => changeLanguage("pt")}>PT-BR</Button><span aria-hidden="true">|</span><Button variant="ghost" className={language === "en" ? "is-active" : ""} onClick={() => changeLanguage("en")}>EN-UK</Button></div>;
 
+  const isPt = language === "pt";
+
   return <div className="page">
     <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
-      <div className="brand-row"><a href="#top" aria-label="Yamini Studio"><img src={logoAsset.url} alt="Yamini Studio" /></a></div>
+      <div className="brand-row"><a href="#top" aria-label="Yamini Studio"><img src="/favicon.png" alt="Yamini Studio" className="brand-logo-desktop" /></a></div>
       <nav className="desktop-nav" aria-label="Main navigation">
         <div className="nav-item"><a href="#yamini">{t.nav[0]}</a><div className="nav-dropdown">{t.yaminiDrop.map((item, i) => <a key={item} href={["#yamini", "#collections", "#cultures"][i]}>{item}</a>)}</div></div>
         <div className="nav-item"><Link to="/collections">{t.nav[1]}</Link></div>
         {navLinks.slice(2).map(([label, href]) => <div className="nav-item" key={href}><a href={href}>{label}</a></div>)}
         <LanguageSwitch />
       </nav>
-      <div className="mobile-bar"><Button variant="ghost" className="menu-button" aria-label={menuOpen ? t.close : t.menu} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><span/><span/><span/></Button><a href="#top"><img src={logoAsset.url} alt="Yamini Studio" /></a><LanguageSwitch /></div>
-      <nav className={`mobile-menu ${menuOpen ? "is-open" : ""}`} aria-label="Mobile navigation">{navLinks.map(([label, href], i) => i === 1 ? <Link key={href} to="/collections" onClick={() => setMenuOpen(false)}>{label}</Link> : <a key={href} href={href} onClick={() => setMenuOpen(false)}>{label}</a>)}</nav>
+      <div className="mobile-bar">
+        <Button
+          variant="ghost"
+          size="icon"
+          aria-label={menuOpen ? t.close : t.menu}
+          onClick={() => setMenuOpen(true)}
+        >
+          <Menu />
+        </Button>
+        <a href="#top" aria-label="Yamini Studio" className="mobile-brand-link">
+          <img src="/facicon-mobile.png" alt="Yamini Studio" className="mobile-brand-logo" width="115" height="115" />
+        </a>
+        <LanguageSwitch />
+      </div>
     </header>
+
+    {menuOpen && (
+      <SidePanel title={isPt ? "Navegação" : "Menu"} onClose={() => setMenuOpen(false)}>
+        <div className="flex flex-col gap-6">
+          <a
+            href="#top"
+            onClick={() => setMenuOpen(false)}
+            className="font-serif text-2xl font-normal hover:text-gold transition-colors"
+          >
+            {isPt ? "Início" : "Home"}
+          </a>
+          <a
+            href="#yamini"
+            onClick={() => setMenuOpen(false)}
+            className="font-serif text-2xl font-normal hover:text-gold transition-colors"
+          >
+            Yamini
+          </a>
+          <Link
+            to="/collections"
+            onClick={() => setMenuOpen(false)}
+            className="font-serif text-2xl font-normal hover:text-gold transition-colors"
+          >
+            {t.nav[1]}
+          </Link>
+          <div className="pl-4 flex flex-col gap-3 -mt-2">
+            {collections.map((c) => (
+              <Link
+                key={c.slug}
+                to="/collections/$collection"
+                params={{ collection: c.slug }}
+                onClick={() => setMenuOpen(false)}
+                className="font-serif text-lg font-normal text-muted-foreground hover:text-gold transition-colors"
+              >
+                {isPt ? ('namePt' in c ? c.namePt : c.name) : ('nameEn' in c ? c.nameEn : c.name)}
+                {!c.available && (
+                  <span className="ml-2 font-sans text-xs text-muted-foreground">
+                    {isPt ? '· Em breve' : '· Soon'}
+                  </span>
+                )}
+              </Link>
+            ))}
+          </div>
+          <a
+            href="#mayamini"
+            onClick={() => setMenuOpen(false)}
+            className="font-serif text-2xl font-normal hover:text-gold transition-colors"
+          >
+            MaYamini
+          </a>
+          <a
+            href="#founder"
+            onClick={() => setMenuOpen(false)}
+            className="font-serif text-2xl font-normal hover:text-gold transition-colors"
+          >
+            {t.nav[3]}
+          </a>
+          <a
+            href="#philosophy"
+            onClick={() => setMenuOpen(false)}
+            className="font-serif text-2xl font-normal hover:text-gold transition-colors"
+          >
+            {t.nav[4]}
+          </a>
+          <div className="pt-4 border-t border-border mt-2">
+            <LanguageSwitch />
+          </div>
+        </div>
+      </SidePanel>
+    )}
 
     <main id="top">
       <section className="section hero"><div className="inner hero-grid"><div className="hero-copy"><p className="eyebrow">Yamini Studio</p><h1>{t.heroLabel}</h1><p>{t.heroIntro}</p><a className="text-link" href="#yamini">{t.discover}</a></div><figure className="hero-visual"><img src={silkHero} alt={t.heroImage} width={1024} height={1536} fetchPriority="high" /></figure></div></section>
@@ -222,7 +298,7 @@ function Index() {
     </main>
 
     <div className="prahar-thread" aria-hidden="true"><i/><i/><i/><i/></div>
-    <footer className="site-footer"><div className="pallu" aria-hidden="true"><span/><span/><span/></div><div className="inner"><div className="footer-grid"><div><img src={logoAsset.url} alt="Yamini Studio" width="150"/><p className="footer-note">{t.disclaimer}</p></div><nav className="footer-links" aria-label="Footer">{navLinks.map(([label, href], i) => i === 1 ? <Link key={href} to="/collections">{label}</Link> : <a key={href} href={href}>{label}</a>)}</nav><div className="rangoli" title="96" aria-label="96">{Array.from({length:96},(_,i)=><i key={i}/>)}</div></div><div className="footer-bottom"><span>{t.copyright}</span><Button variant="ghost" className="lamp" title={t.backTop} aria-label={t.backTop} onClick={() => window.scrollTo({top:0, behavior:"smooth"})}><Lamp/></Button></div></div></footer>
+    <footer className="site-footer"><div className="pallu" aria-hidden="true"><span/><span/><span/></div><div className="inner"><div className="footer-grid"><div><img src="/favicon.png" alt="Yamini Studio" className="brand-logo-desktop" width="150"/><img src="/facicon-mobile.png" alt="Yamini Studio" className="brand-logo-mobile" width="140" height="140"/><p className="footer-note">{t.disclaimer}</p></div><nav className="footer-links" aria-label="Footer">{navLinks.map(([label, href], i) => i === 1 ? <Link key={href} to="/collections">{label}</Link> : <a key={href} href={href}>{label}</a>)}</nav><div className="rangoli" title="96" aria-label="96">{Array.from({length:96},(_,i)=><i key={i}/>)}</div></div><div className="footer-bottom"><span>{t.copyright}</span><Button variant="ghost" className="lamp" title={t.backTop} aria-label={t.backTop} onClick={() => window.scrollTo({top:0, behavior:"smooth"})}><Lamp/></Button></div></div></footer>
   </div>;
 }
 

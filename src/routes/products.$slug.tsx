@@ -1,13 +1,27 @@
 import { createFileRoute, notFound } from '@tanstack/react-router';
-import { products } from '@/lib/catalogue';
-import { SubPageShell } from '@/components/SubPageShell';
-import { ProductDetail } from '@/components/ProductDetail';
+import { ProductPage } from '@/components/shop/product-page';
+import { ShopShell } from '@/components/shop/storefront';
+import { findProduct, pageHead } from '@/lib/catalog';
+
 export const Route = createFileRoute('/products/$slug')({
- loader: ({ params }) => { const product = products.find(p => p.slug===params.slug); if (!product) throw notFound(); return product; },
- head: ({ loaderData }) => {
- const title = loaderData ? `${loaderData.en.name} — Yamini Studio` : 'Piece unavailable — Yamini Studio'; const description = loaderData?.en.description ?? 'Explore the Yamini Studio catalogue.';
- return { meta: [{ title },{ name: 'description', content: description },{ property: 'og:title', content: title },{ property: 'og:description', content: description },{ property: 'og:type', content: 'website' },{ name: 'twitter:card', content: 'summary_large_image' }] };
- },
- component: ProductPage,
+  loader: ({ params }) => {
+    const product = findProduct(params.slug);
+    if (!product) throw notFound();
+    return product;
+  },
+  head: ({ loaderData }) =>
+    pageHead(
+      loaderData?.name ?? 'Piece unavailable',
+      loaderData?.description ?? 'Explore the Yamini Studio collection.'
+    ),
+  component: ProductDetailRoute,
 });
-function ProductPage() { const product = Route.useLoaderData(); return <SubPageShell>{language => <ProductDetail key={product.slug} product={product} language={language}/>}</SubPageShell>; }
+
+function ProductDetailRoute() {
+  const product = Route.useLoaderData();
+  return (
+    <ShopShell>
+      <ProductPage key={product.slug} product={product} />
+    </ShopShell>
+  );
+}
