@@ -4,6 +4,9 @@ import logoAsset from "@/assets/yamini-studio-logo.png.asset.json";
 import { Button } from "@/components/ui/button";
 import { preferredLanguage, type Language } from "@/lib/language";
 import { catalogueCopy } from "@/lib/catalogue";
+import { categories } from "@/lib/catalogue";
+import { Heart } from 'lucide-react';
+import { CatalogueSearch } from './CatalogueSearch';
 
 /**
  * Quiet header + language handling for sub-pages, matching the home theme.
@@ -37,10 +40,13 @@ export function SubPageShell({ children }: { children: (language: Language) => R
     <div className="page">
       <header className="site-header is-scrolled">
         <div className="subpage-bar">
+          <p className="catalogue-brand-note">{catalogueCopy[language].heritage}</p>
           <Link to="/" aria-label="Yamini Studio">
             <img src={logoAsset.url} alt="Yamini Studio" />
           </Link>
-          <div className="language-switch" aria-label="Language selection">
+          <div className="catalogue-header-actions"><CatalogueSearch language={language}/><Button asChild variant="ghost" size="icon" aria-label={catalogueCopy[language].wishlist} title={catalogueCopy[language].wishlist}><Link to="/collections" search={{ wishlist:true }}><Heart/></Link></Button></div>
+        </div>
+        <nav className="subpage-navigation"><Link to="/collections">{catalogueCopy[language].collections}</Link>{categories.map((category,i) => <Link key={category} to="/collections" search={{category}}>{catalogueCopy[language].categories[i]}</Link>)}<Link to="/" hash="mayamini">MaYamini <span>{catalogueCopy[language].launching}</span></Link><div className="language-switch" aria-label="Language selection">
             <Button variant="ghost" className={language === "pt" ? "is-active" : ""} onClick={() => setLanguage("pt")}>
               PT-BR
             </Button>
@@ -48,10 +54,8 @@ export function SubPageShell({ children }: { children: (language: Language) => R
             <Button variant="ghost" className={language === "en" ? "is-active" : ""} onClick={() => setLanguage("en")}>
               EN-UK
             </Button>
-          </div>
-        </div>
+          </div></nav>
       </header>
-      <nav className="subpage-navigation"><Link to="/">{catalogueCopy[language].home}</Link><Link to="/collections">{catalogueCopy[language].collections}</Link></nav>
       <main>{children(language)}</main>
     </div>
   );
